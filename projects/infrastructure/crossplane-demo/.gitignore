@@ -1,0 +1,5 @@
+# vault keys file
+cluster-keys.json
+
+# aws keys file
+creds.json

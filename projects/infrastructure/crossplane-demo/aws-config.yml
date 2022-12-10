@@ -1,0 +1,9 @@
+apiVersion: aws.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Filesystem
+    fs:
+      path: /vault/secrets/creds.txt

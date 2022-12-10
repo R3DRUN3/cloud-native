@@ -1,0 +1,16 @@
+apiVersion: s3.aws.crossplane.io/v1beta1
+kind: Bucket
+metadata:
+  name: s3-vault-demo
+spec:
+  forProvider:
+    acl: private
+    locationConstraint: eu-central-1
+    publicAccessBlockConfiguration:
+      blockPublicPolicy: true
+    tagging:
+      tagSet:
+        - key: Name
+          value: s3-vault-demo-crossplane-ytbfisgpdhhgytp
+  providerConfigRef:
+    name: default
