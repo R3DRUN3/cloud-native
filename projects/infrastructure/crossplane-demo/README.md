@@ -41,7 +41,7 @@ cloud environments in a more automated way (*GitOps*) and to prevent <a href="ht
 
 This repo will teach you to do the following things:  
 - deploy `crossplane` on a `Kubernetes` cluster.
-- deploy `hashicorp vault` ion the same cluster.
+- deploy `hashicorp vault` on the same cluster.
 - integrate `crossplane` with `hashicorp vault` for secrets management.
 - create `aws` resources from `crossplane`.
 
