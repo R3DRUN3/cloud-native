@@ -1,0 +1,20 @@
+---
+apiVersion: azure.crossplane.io/v1alpha3
+kind: ResourceGroup
+metadata:
+  name: aks-resource-group-demo
+spec:
+  location: westeurope
+---
+apiVersion: compute.azure.crossplane.io/v1alpha3
+kind: AKSCluster
+metadata:
+  name: ak8s-crossplane-cluster
+spec:
+  location: westeurope
+  version: "1.23.12"
+  nodeVMSize: Standard_D2_v2
+  resourceGroupNameRef:
+    name: aks-resource-group-demo
+  dnsNamePrefix: ak8s-crossplane-cluster
+  nodeCount: 3
