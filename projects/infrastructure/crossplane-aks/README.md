@@ -225,7 +225,7 @@ For example, if you want to delete the created aks cluster, you can run:
 ```console
 kubectl delete akscluster ak8s-crossplane-cluster
 
-kscluster.compute.azure.crossplane.io "ak8s-crossplane-cluster" deleted
+akscluster.compute.azure.crossplane.io "ak8s-crossplane-cluster" deleted
 ```  
 This will remove the resource from crossplane and also from your cloud provider.
 
