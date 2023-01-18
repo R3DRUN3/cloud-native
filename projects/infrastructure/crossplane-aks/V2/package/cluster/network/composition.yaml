@@ -1,0 +1,73 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xnetworks.azure.aksstack.upbound.io
+  labels:
+    provider: azure
+spec:
+  compositeTypeRef:
+    apiVersion: azure.aksstack.upbound.io/v1alpha1
+    kind: XNetwork
+  resources:
+  - base:
+      apiVersion: azure.upbound.io/v1beta1
+      kind: ResourceGroup
+      spec:
+        forProvider:
+          location: westeurope
+    patches:
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.name
+        transforms:
+          - type: string
+            string:
+              fmt: "%s-rg"
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.annotations[upbound.io/external-name]
+        transforms:
+          - type: string
+            string:
+              fmt: "%s-rg"
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.labels[azure.aksstack.upbound.io/app]
+  - base:
+      apiVersion: network.azure.upbound.io/v1beta1
+      kind: VirtualNetwork
+      spec:
+        forProvider:
+          resourceGroupNameSelector:
+            matchControllerRef: true
+          location: westeurope
+          addressSpace:
+           - 192.168.0.0/16
+    patches:
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.labels[app]
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.name
+        transforms:
+          - type: string
+            string:
+              fmt: "%s-vnet"
+  - base:
+      apiVersion: network.azure.upbound.io/v1beta1
+      kind: Subnet
+      spec:
+        forProvider:
+          resourceGroupNameSelector:
+            matchControllerRef: true
+          virtualNetworkNameSelector:
+            matchControllerRef: true
+          addressPrefixes:
+            - 192.168.1.0/24
+          serviceEndpoints:
+            - Microsoft.Sql
+    patches:
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.labels[azure.aksstack.upbound.io/app]
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.name
+        transforms:
+          - type: string
+            string:
+              fmt: "%s-sn"

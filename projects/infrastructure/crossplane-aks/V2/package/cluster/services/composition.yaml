@@ -1,0 +1,47 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xservices.azure.aksstack.upbound.io
+  labels:
+    plan: full
+    provider: helm
+spec:
+  compositeTypeRef:
+    apiVersion: azure.aksstack.upbound.io/v1alpha1
+    kind: XServices
+  resources:
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        spec:
+          rollbackLimit: 3
+          forProvider:
+            namespace: vault
+            chart:
+              # from https://github.com/vault-community/helm-charts
+              # Note that default values are overridden by the patches below.
+              name: vault
+              repository: https://helm.releases.hashicorp.com
+              version: "0.22.1"
+            values: {}
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-vault"
+        # All Helm releases derive their labels and annotations from the XR.
+        - fromFieldPath: metadata.labels
+          toFieldPath: metadata.labels
+        - fromFieldPath: metadata.annotations
+          toFieldPath: metadata.annotations
+        # All Helm releases derive the ProviderConfig to use from the XR.
+        - fromFieldPath: spec.providerConfigRef.name
+          toFieldPath: spec.providerConfigRef.name
+        # Derive the vault operator image and tag from the XR.
+        - fromFieldPath: spec.operators.vault.version
+          toFieldPath: spec.forProvider.chart.version
+        # Pass XR namespace to write connection secrets namespace
+        - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+          toFieldPath: spec.writeConnectionSecretToRef.namespace

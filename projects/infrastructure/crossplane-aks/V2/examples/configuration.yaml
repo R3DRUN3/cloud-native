@@ -1,0 +1,8 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: upbound-azure-aks-stack
+spec:
+  package: xpkg.upbound.io/upbound/azure-aks-stack:v0.4.1
+  packagePullSecrets:
+    - name: package-pull-secret

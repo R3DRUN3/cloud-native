@@ -1,0 +1,19 @@
+apiVersion: azure.aksstack.upbound.io/v1alpha1
+kind: Cluster
+metadata:
+  name: azure-aks-stack
+  namespace: default
+  annotations:
+    uptest.upbound.io/post-assert-hook: testhooks/delete-release.sh
+spec:
+  id: azure-aks-stack
+  parameters:
+    nodes:
+      count: 3 #1-100
+      size: Standard_D2_v2
+    services:
+      operators:
+        vault:
+          version: "0.22.1"
+  writeConnectionSecretToRef:
+    name: azure-aks-stack-kubeconfig #Must be unique for each instance
