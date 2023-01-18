@@ -2,7 +2,6 @@
 
 AKS Crossplane composition proof of concept.
 
-<br/>
 
 ## Abstract
 The goal of this repo is to deploy the same resources as in the parent repo but using Crossplane `Compositions` instead of simple `managed resources`.
@@ -119,7 +118,7 @@ az aks get-credentials --resource-group azure-aks-stack-rg --name azure-aks-stac
 
 <br/>
 
-Now change kubectl context:  
+And change kubectl context:  
 ```console
 export KUBECONFIG=kubeconfig-aks
 ```
