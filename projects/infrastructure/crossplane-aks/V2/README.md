@@ -163,7 +163,7 @@ azure-aks-stack-vault-agent-injector-68797cf5-9kw68   1/1     Running   0       
 
 <br/>
 
-To delete the created resources via crossplane run the following command:  
+To delete all created resources run the following command:  
 ```console
 kubectl delete -f examples/cluster-claim.yaml
 ```
