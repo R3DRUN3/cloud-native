@@ -4,7 +4,7 @@ AKS Crossplane composition proof of concept.
 
 
 ## Abstract
-The goal of this repo is to deploy the same resources as in the parent repo but using Crossplane `Compositions` instead of simple `managed resources`.
+The goal of this repo is to deploy the same resources as in the <a href="https://github.com/R3DRUN3/cloud-native/tree/main/projects/infrastructure/crossplane-aks">parent</a> repo but using Crossplane `Compositions` instead of simple `managed resources`.
 
 ## Requirements
 - *azure account*
