@@ -72,22 +72,24 @@ kubectl apply -f examples/cluster-claim.yaml
 
 Check for managed resources:  
 ```console
-❯ kubectl get managed
+❯ watch kubectl get managed
+
+Every 2.0s: kubectl get managed                                                                                                                                  KPDOIT26.local: Thu Jan 19 09:22:02 2023
 
 NAME                                                READY   SYNCED   EXTERNAL-NAME        AGE
-resourcegroup.azure.upbound.io/azure-aks-stack-rg   True    True     azure-aks-stack-rg   6m8s
+resourcegroup.azure.upbound.io/azure-aks-stack-rg   True    True     azure-aks-stack-rg   63s
 
 NAME                                               CHART   VERSION   SYNCED   READY   STATE   REVISION   DESCRIPTION   AGE
-release.helm.crossplane.io/azure-aks-stack-vault   vault   0.22.1    False                                             6m8s
+release.helm.crossplane.io/azure-aks-stack-vault   vault   0.22.1    False                                             63s
 
 NAME                                                                      READY   SYNCED   EXTERNAL-NAME         AGE
-kubernetescluster.containerservice.azure.upbound.io/azure-aks-stack-aks   True    True     azure-aks-stack-aks   6m8s
+kubernetescluster.containerservice.azure.upbound.io/azure-aks-stack-aks   False   True     azure-aks-stack-aks   63s
 
 NAME                                                           READY   SYNCED   EXTERNAL-NAME          AGE
-virtualnetwork.network.azure.upbound.io/azure-aks-stack-vnet   True    True     azure-aks-stack-vnet   6m8s
+virtualnetwork.network.azure.upbound.io/azure-aks-stack-vnet   True    True     azure-aks-stack-vnet   63s
 
 NAME                                                 READY   SYNCED   EXTERNAL-NAME        AGE
-subnet.network.azure.upbound.io/azure-aks-stack-sn   True    True     azure-aks-stack-sn   6m8s
+subnet.network.azure.upbound.io/azure-aks-stack-sn   True    True     azure-aks-stack-sn   63s
 ```
 
 <br/>
@@ -141,27 +143,58 @@ Output:
 ```console
 Retrieving cluster nodes:
 NAME                              STATUS   ROLES   AGE   VERSION
-aks-default-39530864-vmss000000   Ready    agent   76m   v1.24.3
-aks-default-39530864-vmss000001   Ready    agent   76m   v1.24.3
-aks-default-39530864-vmss000002   Ready    agent   76m   v1.24.3
+aks-default-20610590-vmss000000   Ready    agent   15m   v1.24.3
+aks-default-20610590-vmss000001   Ready    agent   15m   v1.24.3
+aks-default-20610590-vmss000002   Ready    agent   15m   v1.24.3
 
 
 Retrieving cluster namespaces:
 NAME              STATUS   AGE
-default           Active   78m
-kube-node-lease   Active   78m
-kube-public       Active   78m
-kube-system       Active   78m
-vault             Active   74m
+default           Active   16m
+kube-node-lease   Active   16m
+kube-public       Active   16m
+kube-system       Active   16m
+vault             Active   13m
 
 
 Retrieving pods in the 'vault' namespace:
 NAME                                                  READY   STATUS    RESTARTS   AGE
-azure-aks-stack-vault-0                               0/1     Running   0          24m
-azure-aks-stack-vault-agent-injector-68797cf5-9kw68   1/1     Running   0          24m
+azure-aks-stack-vault-0                               0/1     Running   0          12m
+azure-aks-stack-vault-1                               0/1     Running   0          12m
+azure-aks-stack-vault-2                               0/1     Running   0          12m
+azure-aks-stack-vault-agent-injector-68797cf5-jsqnt   1/1     Running   0          13m
 ```
 
 <br/>
+
+Note that all the vault pods shows 0/1 because vault is sealed.
+<br/>
+In order to unseal it we can either use *kubectl exec* or the vault *web ui*.
+<br/>
+To do it via kubectl, take a look at <a href="https://github.com/R3DRUN3/cyberhall/tree/main/k8s-security/k8s-vault/demo-1">this</a> repo.
+<br/>
+To do it via web ui, take a look at <a href="https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-azure-aks">this</a> guide.
+<br/>
+<br/>
+
+To see the vault ui ip (Load Balancer):  
+```console
+❯ kubectl -n vault get service azure-aks-stack-vault-ui
+
+NAME                       TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)          AGE
+azure-aks-stack-vault-ui   LoadBalancer   10.0.234.134   20.126.170.11   8200:31388/TCP   7m30s
+```
+
+<br/>
+
+If you reach that *EXTERNAL-IP* address via browser:  
+<div style="width: 65%; height: 65%">
+
+  ![](images/vault-web-ui.png)
+  
+</div>
+<br/>
+
 
 To delete all created resources run the following command:  
 ```console

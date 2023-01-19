@@ -1,7 +1,7 @@
 apiVersion: azure.aksstack.upbound.io/v1alpha1
 kind: Cluster
 metadata:
-  name: azure-aks-stack
+  name: azure-aks-stack-poc
   namespace: default
   annotations:
     uptest.upbound.io/post-assert-hook: testhooks/delete-release.sh

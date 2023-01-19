@@ -23,7 +23,17 @@ spec:
               name: vault
               repository: https://helm.releases.hashicorp.com
               version: "0.22.1"
-            values: {}
+            values:
+              server:
+                ha:
+                  enabled: true
+                  replicas: 3
+                  raft:
+                    enabled: true
+                    setNodeId: true
+              ui:
+                enabled: true
+                serviceType: "LoadBalancer"
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name

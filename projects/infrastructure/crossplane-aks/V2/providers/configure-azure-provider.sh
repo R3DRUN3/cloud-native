@@ -14,14 +14,14 @@ az ad app permission grant --id ${AZURE_CLIENT_ID} --api 00000002-0000-0000-c000
 echo "grant admin consent to the service princinpal you created (The admin consent workflow gives admins a secure way to grant access to applications that require admin approval)"
 az ad app permission admin-consent --id "${AZURE_CLIENT_ID}"
 echo "install crossplane azure provider"
-kubectl apply -f provider-azure.yaml
+kubectl apply -f providers/provider-azure.yaml
 echo "install crossplane helm provider"
-kubectl apply -f provider-helm.yaml
+kubectl apply -f providers/provider-helm.yaml
 echo "check for the installed providers"
 kubectl get provider
 echo "wait for right deployment condition (provider azure healthy and running)"
 kubectl wait --for=condition=healthy --timeout=120s provider/provider-azure
 echo "apply the azure provider configuration"
-kubectl apply -f azure-default-provider-config.yaml
-# echo "apply the helm provider configuration"
-# kubectl apply -f helm-provider.yml
+kubectl apply -f providers/azure-default-provider-config.yaml
+echo "apply the helm provider configuration"
+kubectl apply -f providers/helm-default-provider-config.yaml
