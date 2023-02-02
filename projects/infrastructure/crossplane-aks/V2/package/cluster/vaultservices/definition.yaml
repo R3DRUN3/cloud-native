@@ -1,12 +1,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xservices.azure.aksstack.upbound.io
+  name: xvaultservices.azure.aksstack.upbound.io
 spec:
   group: azure.aksstack.upbound.io
   names:
-    kind: XServices
-    plural: xservices
+    kind: XVaultServices
+    plural: xvaultservices
   versions:
   - name: v1alpha1
     served: true

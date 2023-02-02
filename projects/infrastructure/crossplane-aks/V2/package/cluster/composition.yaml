@@ -31,11 +31,31 @@ spec:
           toFieldPath: spec.parameters.nodes.size
     - base:
         apiVersion: azure.aksstack.upbound.io/v1alpha1
-        kind: XServices
+        kind: XVaultServices
       patches:
         - fromFieldPath: spec.id
           toFieldPath: metadata.name
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
-        - fromFieldPath: spec.parameters.services.operators.vault.version
+        - fromFieldPath: spec.parameters.vaultservices.operators.vault.version
           toFieldPath: spec.operators.vault.version
+    - base:
+        apiVersion: azure.aksstack.upbound.io/v1alpha1
+        kind: XKeptnServices
+      patches:
+        - fromFieldPath: spec.id
+          toFieldPath: metadata.name
+        - fromFieldPath: spec.id
+          toFieldPath: spec.providerConfigRef.name
+        - fromFieldPath: spec.parameters.keptnservices.operators.keptn.version
+          toFieldPath: spec.operators.keptn.version
+    - base:
+        apiVersion: azure.aksstack.upbound.io/v1alpha1
+        kind: XElasticsearchServices
+      patches:
+        - fromFieldPath: spec.id
+          toFieldPath: metadata.name
+        - fromFieldPath: spec.id
+          toFieldPath: spec.providerConfigRef.name
+        - fromFieldPath: spec.parameters.elasticsearchservices.operators.elasticsearch.version
+          toFieldPath: spec.operators.elasticsearch.version

@@ -1,0 +1,61 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xelasticsearchservices.azure.aksstack.upbound.io
+  labels:
+    plan: full
+    provider: helm
+spec:
+  compositeTypeRef:
+    apiVersion: azure.aksstack.upbound.io/v1alpha1
+    kind: XElasticsearchServices
+  resources:
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        spec:
+          rollbackLimit: 3
+          forProvider:
+            namespace: default
+            chart:
+              # Note that default values are overridden by the patches below.
+              name: elasticsearch
+              repository: https://helm.elastic.co
+              version: "8.5.1"
+            values: {}
+              #protocol: http
+              #esJavaOpts: "-Xmx512m -Xms512m"
+              #resources:
+                #requests:
+                  #cpu: "100m"
+                  #memory: "512M"
+                #limits:
+                  #cpu: "1000m"
+                  #memory: "512M"
+              #volumeClaimTemplate:
+                #accessModes: [ "ReadWriteMany" ]
+                #storageClassName: "standard"
+                #resources:
+                  #requests:
+                    #storage: 1Gi
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-elasticsearch"
+        # All Helm releases derive their labels and annotations from the XR.
+        - fromFieldPath: metadata.labels
+          toFieldPath: metadata.labels
+        - fromFieldPath: metadata.annotations
+          toFieldPath: metadata.annotations
+        # All Helm releases derive the ProviderConfig to use from the XR.
+        - fromFieldPath: spec.providerConfigRef.name
+          toFieldPath: spec.providerConfigRef.name
+        # Derive the elasticsearch operator image and tag from the XR.
+        - fromFieldPath: spec.operators.elasticsearch.version
+          toFieldPath: spec.forProvider.chart.version
+        # Pass XR namespace to write connection secrets namespace
+        - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+          toFieldPath: spec.writeConnectionSecretToRef.namespace

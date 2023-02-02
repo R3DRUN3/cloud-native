@@ -11,9 +11,17 @@ spec:
     nodes:
       count: 3 #1-100
       size: Standard_D2_v2
-    services:
+    vaultservices:
       operators:
         vault:
           version: "0.22.1"
+    keptnservices:
+      operators:
+        keptn:
+          version: "1.1.0"
+    elasticsearchservices:
+      operators:
+        elasticsearch:
+          version: "8.5.1"
   writeConnectionSecretToRef:
     name: azure-aks-stack-kubeconfig #Must be unique for each instance
