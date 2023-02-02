@@ -14,27 +14,34 @@ spec:
         kind: KubernetesCluster
         spec:
           forProvider:
-            location: westeurope
-            kubernetesVersion: "1.24.3"
+            resourceGroupName: test-rg # patched
+            location: westeurope # patched
+            kubernetesVersion: "1.24.3" # patched
             defaultNodePool:
               - name: default
-                nodeCount: 1 #patched
-                vmSize: Standard_D2_v2 #patched
+                nodeCount: 1 # patched
+                vmSize: Standard_D4s_v3 # patched
             identity:
               - type: "SystemAssigned"
       patches:
         - fromFieldPath: spec.id
           toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-aks"
-        - fromFieldPath: spec.id
-          toFieldPath: spec.forProvider.resourceGroupNameSelector.matchLabels[azure.aksstack.upbound.io/app]
+          #transforms:
+            #- type: string
+              #string:
+                #fmt: "%s-aks"
+        #- fromFieldPath: spec.id
+        #  toFieldPath: spec.forProvider.resourceGroupNameSelector.matchLabels[azure.aksstack.upbound.io/app]
         - fromFieldPath: spec.id
           toFieldPath: spec.forProvider.vnetSubnetIdSelector.matchLabels[azure.aksstack.upbound.io/app]
         - fromFieldPath: spec.id
           toFieldPath: spec.forProvider.dnsPrefix
+        - fromFieldPath: spec.parameters.location
+          toFieldPath: spec.forProvider.location
+        - fromFieldPath: spec.parameters.resourceGroup
+          toFieldPath: spec.forProvider.resourceGroupName
+        - fromFieldPath: spec.parameters.kubernetesVersion
+          toFieldPath: spec.forProvider.kubernetesVersion
         - fromFieldPath: spec.parameters.nodes.size
           toFieldPath: spec.forProvider.defaultNodePool[0].vmSize
         - fromFieldPath: spec.parameters.nodes.count

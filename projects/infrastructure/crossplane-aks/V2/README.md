@@ -76,14 +76,11 @@ Check for managed resources:
 
 Every 2.0s: kubectl get managed                                                                                                                                  KPDOIT26.local: Thu Jan 19 09:22:02 2023
 
-NAME                                                READY   SYNCED   EXTERNAL-NAME        AGE
-resourcegroup.azure.upbound.io/azure-aks-stack-rg   True    True     azure-aks-stack-rg   63s
-
 NAME                                               CHART   VERSION   SYNCED   READY   STATE   REVISION   DESCRIPTION   AGE
 release.helm.crossplane.io/azure-aks-stack-vault   vault   0.22.1    False                                             63s
 
 NAME                                                                      READY   SYNCED   EXTERNAL-NAME         AGE
-kubernetescluster.containerservice.azure.upbound.io/azure-aks-stack-aks   False   True     azure-aks-stack-aks   63s
+kubernetescluster.containerservice.azure.upbound.io/azure-aks-stack   False   True     azure-aks-stack-aks   63s
 
 NAME                                                           READY   SYNCED   EXTERNAL-NAME          AGE
 virtualnetwork.network.azure.upbound.io/azure-aks-stack-vnet   True    True     azure-aks-stack-vnet   63s
@@ -115,7 +112,7 @@ And inside the created resource group we can see our Vnet and our cluster:
 
 Now we can export our aks kubeconfig:  
 ```console
-az aks get-credentials --resource-group azure-aks-stack-rg --name azure-aks-stack-aks --file kubeconfig-aks
+az aks get-credentials --resource-group bancasella --name azure-aks-stack --file kubeconfig-aks
 ```
 
 <br/>
@@ -194,6 +191,18 @@ If you reach that *EXTERNAL-IP* address via browser:
   
 </div>
 <br/>
+
+This deployment also install *keptn* and *elasticsearch*.
+
+In order to test elasticsearch installation do the following:
+```console
+kubectl -n elasticsearch port-forward svc/elasticsearch-master 9200:9200
+```
+
+Then, from another terminal, run:  
+```console
+curl http://localhost:9200
+```
 
 
 To delete all created resources run the following command:  

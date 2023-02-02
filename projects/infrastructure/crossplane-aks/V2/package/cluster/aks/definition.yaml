@@ -27,6 +27,15 @@ spec:
                 type: object
                 description: AKS configuration parameters.
                 properties:
+                  location:
+                    type: string
+                    description: The region where the Managed Kubernetes Cluster should be created (eg westeurope). Changing this forces a new resource to be created.
+                  resourceGroup:
+                    type: string
+                    description: Specifies the Resource Group where the Managed Kubernetes Cluster should exist. Changing this forces a new resource to be created.
+                  kubernetesVersion:
+                    type: string
+                    description: Version of Kubernetes specified when creating the AKS managed cluster. If not specified, the latest recommended version will be used at provisioning time (but won't auto-upgrade).
                   nodes:
                     type: object
                     description: AKS node configuration parameters.

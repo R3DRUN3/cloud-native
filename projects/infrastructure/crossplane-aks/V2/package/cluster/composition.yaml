@@ -7,12 +7,12 @@ spec:
     apiVersion: azure.aksstack.upbound.io/v1alpha1
     kind: XCluster
   resources:
-    - base:
-        apiVersion: azure.aksstack.upbound.io/v1alpha1
-        kind: XNetwork
-      patches:
-        - fromFieldPath: spec.id
-          toFieldPath: spec.id
+    #- base:
+        #apiVersion: azure.aksstack.upbound.io/v1alpha1
+        #kind: XNetwork
+      #patches:
+        #- fromFieldPath: spec.id
+          #toFieldPath: spec.id
     - base:
         apiVersion: azure.aksstack.upbound.io/v1alpha1
         kind: XAKS
@@ -25,6 +25,12 @@ spec:
           toFieldPath: spec.writeConnectionSecretToRef.name
         - fromFieldPath: spec.claimRef.namespace
           toFieldPath: spec.writeConnectionSecretToRef.namespace
+        - fromFieldPath: spec.parameters.location
+          toFieldPath: spec.parameters.location
+        - fromFieldPath: spec.parameters.resourceGroup
+          toFieldPath: spec.parameters.resourceGroup
+        - fromFieldPath: spec.parameters.kubernetesVersion
+          toFieldPath: spec.parameters.kubernetesVersion
         - fromFieldPath: spec.parameters.nodes.count
           toFieldPath: spec.parameters.nodes.count
         - fromFieldPath: spec.parameters.nodes.size

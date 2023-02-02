@@ -6,11 +6,14 @@ metadata:
   annotations:
     uptest.upbound.io/post-assert-hook: testhooks/delete-release.sh
 spec:
-  id: azure-aks-stack
+  id: azure-aks-stack # the cluster name
   parameters:
+    location: westeurope
+    resourceGroup: bancasella
+    kubernetesVersion: "1.24.3"
     nodes:
       count: 3 #1-100
-      size: Standard_D2_v2
+      size: Standard_D4s_v3
     vaultservices:
       operators:
         vault:

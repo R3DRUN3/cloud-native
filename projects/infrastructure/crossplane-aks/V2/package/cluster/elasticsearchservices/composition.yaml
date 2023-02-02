@@ -16,28 +16,28 @@ spec:
         spec:
           rollbackLimit: 3
           forProvider:
-            namespace: default
+            namespace: elasticsearch
             chart:
               # Note that default values are overridden by the patches below.
               name: elasticsearch
               repository: https://helm.elastic.co
               version: "8.5.1"
-            values: {}
-              #protocol: http
-              #esJavaOpts: "-Xmx512m -Xms512m"
-              #resources:
-                #requests:
-                  #cpu: "100m"
-                  #memory: "512M"
-                #limits:
-                  #cpu: "1000m"
-                  #memory: "512M"
-              #volumeClaimTemplate:
-                #accessModes: [ "ReadWriteMany" ]
-                #storageClassName: "standard"
-                #resources:
-                  #requests:
-                    #storage: 1Gi
+            values:
+              protocol: http
+              esJavaOpts: "-Xmx512m -Xms512m"
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "512M"
+                limits:
+                  cpu: "1000m"
+                  memory: "512M"
+              volumeClaimTemplate:
+                accessModes: [ "ReadWriteMany" ]
+                storageClassName: "standard"
+                resources:
+                  requests:
+                    storage: 1Gi
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name
