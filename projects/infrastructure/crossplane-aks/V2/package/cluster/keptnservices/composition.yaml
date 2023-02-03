@@ -21,7 +21,7 @@ spec:
               # Note that default values are overridden by the patches below.
               name: keptn
               repository: https://charts.keptn.sh
-              version: "1.1.0"
+              version: "1.2.0"
             values: {}
       patches:
         - fromFieldPath: metadata.name
