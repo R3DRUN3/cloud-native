@@ -18,10 +18,10 @@ spec:
       operators:
         vault:
           version: "0.22.1"
-    keptnservices:
-      operators:
-        keptn:
-          version: "1.1.0"
+    #keptnservices:
+      #operators:
+        #keptn:
+          #version: "1.1.0"
     elasticsearchservices:
       operators:
         elasticsearch:

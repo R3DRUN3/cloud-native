@@ -34,7 +34,7 @@ spec:
                   memory: "512M"
               volumeClaimTemplate:
                 accessModes: [ "ReadWriteMany" ]
-                storageClassName: "standard"
+                storageClassName: "default"
                 resources:
                   requests:
                     storage: 1Gi

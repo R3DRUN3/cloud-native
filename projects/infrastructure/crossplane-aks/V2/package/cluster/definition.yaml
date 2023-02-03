@@ -52,36 +52,36 @@ spec:
                     required:
                     - count
                     - size
-                  vaultservices:
-                    type: object
-                    description: Vault Service configuration parameters.
-                    properties:
-                      operators:
-                        type: object
-                        description: Configuration for operators.
-                        properties:
-                          vault:
-                            type: object
-                            description: Configuration for the Vault operator.
-                            properties:
-                              version:
-                                type: string
-                                description: Vault operator version to run.
-                  keptnservices:
-                    type: object
-                    description: Keptn Service configuration parameters.
-                    properties:
-                      operators:
-                        type: object
-                        description: Configuration for operators.
-                        properties:
-                          keptn:
-                            type: object
-                            description: Configuration for the Keptn operator.
-                            properties:
-                              version:
-                                type: string
-                                description: Keptn operator version to run.
+                  #vaultservices:
+                    #type: object
+                    #description: Vault Service configuration parameters.
+                    #properties:
+                      #operators:
+                        #type: object
+                        #description: Configuration for operators.
+                        #properties:
+                          #vault:
+                            #type: object
+                            #description: Configuration for the Vault operator.
+                            #properties:
+                              #version:
+                                #type: string
+                                #description: Vault operator version to run.
+                  #keptnservices:
+                    #type: object
+                    #description: Keptn Service configuration parameters.
+                    #properties:
+                      #operators:
+                        #type: object
+                        #description: Configuration for operators.
+                        #properties:
+                          #keptn:
+                            #type: object
+                            #description: Configuration for the Keptn operator.
+                            #properties:
+                              #version:
+                                #type: string
+                                #description: Keptn operator version to run.
                   elasticsearchservices:
                     type: object
                     description: Elasticsearch Service configuration parameters.

@@ -1,2 +1,4 @@
 # for macOS development
 .DS_Store
+# kubeconfig files
+kubeconfig*
