@@ -52,7 +52,7 @@ Install required tasks from tekton hub:
 ```console
 make tkn-install-tasks
 ```
-Create tekton pipeline and pipeline run resources (this will automatically start the pipeline run):
+Create tekton `pipeline` and `pipelinerun` resources (this will automatically start the pipeline run):
 ```console
 make tkn-run
 ```
