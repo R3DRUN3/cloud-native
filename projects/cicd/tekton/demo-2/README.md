@@ -3,7 +3,7 @@ This repo contains a working implementation of a `tekton` pipeline.
 <br/>
 We implement a tekton pipeline that clones a git repo and then builds and pushes the application OCI image to a local docker registry.
 <br/>
-Note, this is intendet as a local development environment not suitable for production.
+Note, this is intended as a local development environment not suitable for production.
 
 
 ## Requirements
