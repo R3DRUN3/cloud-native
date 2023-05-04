@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: custom-skopeo
+spec:
+  description: Task used to run Skopeo, Changes from the upstream tekton skopeo task to allow multiple workspaces.
+  params:
+    - name: script
+      description: The Trivy script to run
+      type: string
+      default: "skopeo $@"
+    - name: args
+      description: Script Arguments
+      default: ""
+      type: string
+    - name: path
+      description: Path
+      default: ""
+      type: string
+  steps:
+    - image: "quay.io/mooyeg/python3:latest"
+      name: skopeo-action
+      resources: {}
+      script: "$(params.script)"
+      args:
+        - "$(params.args)"
+      workingDir: $(workspaces.source.path)/$(params.path)
+  workspaces:
+    - name: source

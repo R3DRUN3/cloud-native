@@ -30,7 +30,7 @@ mini-up: ## Spin up a dev cluster with Minikube
 	@$(KUBECTL) apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/release-full.yaml
 	@$(SHELL) ./cluster-config/metrics.sh
 	@echo  "<waiting for metrics server to be up and running>"
-	@$(KUBECTL) wait deployment metrics-server -n kube-system --for condition=Available=True --timeout=100s
+	@$(KUBECTL) wait deployment metrics-server -n kube-system --for condition=Available=True --timeout=60s
 	@$(KUBECTL) get ns
 
 mini-dashboard: ## Enable minikube web dashboard
@@ -42,12 +42,17 @@ mini-down: ## Delete the Minikube dev cluster
 
 tkn-install-tasks: ## Install required tasks from tekton hub
 	@$(TKN) hub install task git-clone
+	@$(TKN) hub install task pylint
+	@$(TKN) hub install task python-coverage
+	@$(TKN) hub install task hadolint
 	@$(TKN) hub install task kaniko
+	@$(TKN) hub install task trivy-scanner
 
 tkn-run: ## Run tekton pipeline
+	@$(KUBECTL) apply -f tekton/custom_skopeo_task.yaml
 	@$(KUBECTL) apply -f tekton/pipeline.yaml
 	@$(KUBECTL) create -f tekton/pipelinerun.yaml
 
 docker-pull-and-run-from-local: ## Pull the image from local registry and runs it
-	@$(DOCKER) pull localhost:5000/app:latest
-	@$(DOCKER) run -it --rm -p 8887:8887 localhost:5000/app:latest
+	@$(DOCKER) pull localhost:5000/app:v1
+	@$(DOCKER) run -it --rm -p 8887:8887 localhost:5000/app:v1

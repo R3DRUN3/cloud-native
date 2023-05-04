@@ -23,5 +23,15 @@ spec:
   params:
   - name: repo-url
     value: https://github.com/stackzoo/simple-web-app.git
+  - name: ignore-rules
+    value: 'DL3007,DL3045,DL3042'
+  - name: dockerfile-path
+    value: './Dockerfile'
   - name: image-reference
-    value: host.docker.internal:5000/app:latest
+    value: host.docker.internal:5000/app:v1
+  - name: trivy_args_image_local
+    value:
+      - "image"
+      - "--light"
+      - "--exit-code"
+      - "0"

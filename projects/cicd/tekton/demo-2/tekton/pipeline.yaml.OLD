@@ -15,10 +15,9 @@ spec:
     type: string
   - name: ignore-rules
     type: string
-  - name: trivy_args_image_local
-    type: array
   workspaces:
   - name: shared-data
+#  - name: docker-credentials
   tasks:
   # Clone source code repository
   - name: fetch-source
@@ -63,49 +62,18 @@ spec:
       value: $(params.ignore-rules)
     - name: dockerfile-path
       value: $(params.dockerfile-path)
-  # Build OCI Image
-  - name: kaniko-build
+  # Build OCI Image and push to local docker registry
+  - name: build-push
     runAfter: ["docker-lint"]
     taskRef:
       name: kaniko
-      kind: Task
-    params:
-      - name: IMAGE
-        value: $(params.image-reference)
-      - name: EXTRA_ARGS
-        value:
-          - --skip-tls-verify
-          - --insecure
     workspaces:
-      - name: source
-        workspace: shared-data
-  # Copy OCI Image locally
-  - name: skopeo-local-copy
-    runAfter: ["kaniko-build"]
-    taskRef:
-      name: custom-skopeo
-      kind: Task
+    - name: source
+      workspace: shared-data
+    # - name: dockerconfig
+    #   workspace: docker-credentials
     params:
-      - name: args
-        value: |
-          copy docker://$(params.image-reference) --src-tls-verify=false oci:/workspace/source/local
-    workspaces:
-      - name: source
-        workspace: shared-data
-  # Image scan with trivy
-  - name: trivy-scan-local-image
-    runAfter: ["skopeo-local-copy"]
-    taskRef:
-      name: trivy-scanner
-      kind: Task
-    params:
-      - name: ARGS
-        value: ["$(params.trivy_args_image_local[*])"]
-      - name: IMAGE_PATH
-        value: "/workspace/manifest-dir/local"
-    workspaces:
-      - name: manifest-dir
-        workspace: shared-data
-
-
-
+    - name: IMAGE
+      value: $(params.image-reference)
+    - name: EXTRA_ARGS
+      value: ["--insecure"]
