@@ -15,6 +15,8 @@ spec:
     type: string
   - name: ignore-rules
     type: string
+  - name: helm-chart-dir
+    type: string
   - name: trivy_args_image_local
     type: array
   workspaces:
@@ -74,14 +76,28 @@ spec:
       workspace: shared-data
     params:
     - name: manifest
-      value: simple-web-app-chart
+      value: $(params.helm-chart-dir)
     - name: default_option
       value: do-not-auto-add-defaults
     - name: includelist
       value: "no-extensions-v1beta"
+  # Check helm manifests against OPA Conftest rules
+  - name: opa-conftest-check
+    runAfter: ["helm-k8s-lint"]
+    taskRef:
+      kind: Task
+      name: helm-conftest
+    workspaces:
+    - name: source
+      workspace: shared-data
+    params:
+    - name: chart
+      value: $(params.helm-chart-dir)
+    - name: policy
+      value: policy
   # Build OCI Image
   - name: kaniko-build
-    runAfter: ["helm-k8s-lint"]
+    runAfter: ["opa-conftest-check"]
     taskRef:
       name: kaniko
       kind: Task

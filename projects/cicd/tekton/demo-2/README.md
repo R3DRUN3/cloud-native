@@ -7,8 +7,9 @@ We implement a tekton pipeline that does the following:
 3. executes a python *unit test*
 4. does *linting* against the *dockerfile*
 5. does *linting* against the *helm/k8s manifests*
-6. *build* the *OCI image* and push it to a *local staging docker registry*
-7. *scan* the image for vulnerabilities
+6. checks the *deployment manifest* against *OPA Conftest* rules
+7. *build* the *OCI image* and push it to a *local staging docker registry*
+8. *scan* the image for vulnerabilities
 
 **Note**: this is intended as a local development environment not suitable for production.
 
@@ -70,7 +71,7 @@ If you want you can inspect the pipeline log from the dashboard, just run:
 ```
 and then open a browser to http://localhost:9097.
 
-After a few seconds, our pipeline has terminated successfully:
+After a few minutes, our pipeline has terminated successfully:
 <p float="left">
   <img src="images/pipeline.png" width="1300" />
 </p>

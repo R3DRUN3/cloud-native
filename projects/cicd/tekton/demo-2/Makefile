@@ -30,7 +30,7 @@ mini-up: ## Spin up a dev cluster with Minikube
 	@$(KUBECTL) apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/release-full.yaml
 	@$(SHELL) ./cluster-config/metrics.sh
 	@echo  "<waiting for metrics server to be up and running>"
-	@$(KUBECTL) wait deployment metrics-server -n kube-system --for condition=Available=True --timeout=60s
+	@$(KUBECTL) wait deployment metrics-server -n kube-system --for condition=Available=True --timeout=70s
 	@$(KUBECTL) get ns
 
 mini-dashboard: ## Enable minikube web dashboard
@@ -46,6 +46,7 @@ tkn-install-tasks: ## Install required tasks from tekton hub
 	@$(TKN) hub install task python-coverage
 	@$(TKN) hub install task hadolint
 	@$(TKN) hub install task kube-linter
+	@$(TKN) hub install task helm-conftest
 	@$(TKN) hub install task kaniko
 	@$(TKN) hub install task trivy-scanner
 

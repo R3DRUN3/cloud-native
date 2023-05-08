@@ -29,6 +29,8 @@ spec:
     value: './Dockerfile'
   - name: image-reference
     value: host.docker.internal:5000/app:v1
+  - name: helm-chart-dir
+    value: simple-web-app-chart
   - name: trivy_args_image_local
     value:
       - "image"
