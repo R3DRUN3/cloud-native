@@ -77,7 +77,7 @@ If you want you can inspect the pipeline log from the dashboard, just run:
 and then open a browser to http://localhost:9097.
 
 After a few minutes, our pipeline has terminated successfully:
-![pipeline](Images/pipeline.png)
+![pipeline](images/pipeline.png)
 
 We can prove this by pulling the builded image from our local registry and running it locally:
 ```console
@@ -85,11 +85,11 @@ make docker-pull-and-run-from-local
 ```
 
 Now open the browser at http://localhost:8887 et voilà! 🔥🔥🔥
-![app](Images/app.png)
+![app](images/app.png)
 
 
 The app also expose [prometheus](https://prometheus.io/) metrics:  
-![prometheus](Images/metrics.png)
+![prometheus](images/metrics.png)
 
 
 
