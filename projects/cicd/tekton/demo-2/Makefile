@@ -23,7 +23,7 @@ docker-registry-down: ## Delete the local docker registry
 
 ## MINIKUBE
 mini-up: ## Spin up a dev cluster with Minikube
-	@$(MINIKUBE) start --profile tekton-cluster
+	@$(MINIKUBE) start --profile tekton-cluster --memory 8192 --cpus 4
 	@echo  "<installing tekton pipelines>"
 	@$(KUBECTL) apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 	@echo  "<installing tekton dashboard>"
@@ -45,6 +45,7 @@ tkn-install-tasks: ## Install required tasks from tekton hub
 	@$(TKN) hub install task pylint
 	@$(TKN) hub install task python-coverage
 	@$(TKN) hub install task hadolint
+	@$(TKN) hub install task kube-linter
 	@$(TKN) hub install task kaniko
 	@$(TKN) hub install task trivy-scanner
 

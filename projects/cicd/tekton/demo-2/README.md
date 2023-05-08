@@ -2,12 +2,13 @@
 This repo contains a working implementation of a <a href="https://tekton.dev/">tekton</a> pipeline.
 <br/>
 We implement a tekton pipeline that does the following:
-1. clone a public git repository
-2. does linting against the python code
-3. executes a python unit test
-4. does linting against the dockerfile
-5. build the OCI image and push it to a local staging docker registry
-6. scan the image for vulnerabilities
+1. *clone* a public git repository
+2. does *linting* against the python code
+3. executes a python *unit test*
+4. does *linting* against the *dockerfile*
+5. does *linting* against the *helm/k8s manifests*
+6. *build* the *OCI image* and push it to a *local staging docker registry*
+7. *scan* the image for vulnerabilities
 
 **Note**: this is intended as a local development environment not suitable for production.
 
@@ -81,7 +82,7 @@ make docker-pull-and-run-from-local
 
 Now open the browser at http://localhost:8887 et voilà! 🔥🔥🔥
 <p float="left">
-  <img src="images/app.png" width="1300" />
+  <img src="images/app.png" width="1500" />
 </p>
 
 <br/>

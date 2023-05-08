@@ -63,9 +63,25 @@ spec:
       value: $(params.ignore-rules)
     - name: dockerfile-path
       value: $(params.dockerfile-path)
+  # Helm/k8s manifests linting
+  - name: helm-k8s-lint
+    runAfter: ["docker-lint"]
+    taskRef:
+      kind: Task
+      name: kube-linter
+    workspaces:
+    - name: source
+      workspace: shared-data
+    params:
+    - name: manifest
+      value: simple-web-app-chart
+    - name: default_option
+      value: do-not-auto-add-defaults
+    - name: includelist
+      value: "no-extensions-v1beta"
   # Build OCI Image
   - name: kaniko-build
-    runAfter: ["docker-lint"]
+    runAfter: ["helm-k8s-lint"]
     taskRef:
       name: kaniko
       kind: Task
