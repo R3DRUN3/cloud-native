@@ -42,7 +42,7 @@ spec:
       workspace: shared-data
   # Execute python unit tests
   - name: pytest
-    runAfter: ["pylint"]
+    runAfter: ["fetch-source"]
     taskRef:
       name: python-coverage
     workspaces:
@@ -53,7 +53,7 @@ spec:
       value: "3.7"
   # Docker file linting
   - name: docker-lint
-    runAfter: ["pytest"]
+    runAfter: ["fetch-source"]
     taskRef:
       kind: Task
       name: hadolint
@@ -67,7 +67,7 @@ spec:
       value: $(params.dockerfile-path)
   # Helm/k8s manifests linting
   - name: helm-k8s-lint
-    runAfter: ["docker-lint"]
+    runAfter: ["fetch-source"]
     taskRef:
       kind: Task
       name: kube-linter
@@ -83,7 +83,7 @@ spec:
       value: "no-extensions-v1beta"
   # Check helm manifests against OPA Conftest rules
   - name: opa-conftest-check
-    runAfter: ["helm-k8s-lint"]
+    runAfter: ["fetch-source"]
     taskRef:
       kind: Task
       name: helm-conftest
@@ -97,7 +97,7 @@ spec:
       value: policy
   # Build OCI Image
   - name: kaniko-build
-    runAfter: ["opa-conftest-check"]
+    runAfter: ["pylint", "pytest", "docker-lint", "helm-k8s-lint", "opa-conftest-check"]
     taskRef:
       name: kaniko
       kind: Task

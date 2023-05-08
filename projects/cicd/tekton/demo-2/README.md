@@ -11,6 +11,8 @@ We implement a tekton pipeline that does the following:
 7. *build* the *OCI image* and push it to a *local staging docker registry*
 8. *scan* the image for vulnerabilities
 
+Some tasks (eg. the linting and testing ones) are run in parallel to speed up the pipeline execution.
+<br/>
 **Note**: this is intended as a local development environment not suitable for production.
 
 
