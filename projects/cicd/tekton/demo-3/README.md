@@ -51,6 +51,7 @@ kubectl port-forward service/el-hello-listener 8080
 ```
 
 Now that the EventListener is running, you can send an event and see what happens.
+<br/>
 Open a new terminal and submit a payload to the cluster:
 ```sh
 curl -v \
