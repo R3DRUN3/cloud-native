@@ -42,6 +42,8 @@ mini-down: ## Delete the Minikube dev cluster
 
 tkn-install-tasks: ## Install required tasks from tekton hub
 	@$(TKN) hub install task git-clone
+	@$(TKN) hub install task check-make
+	@$(TKN) hub install task markdown-lint
 	@$(TKN) hub install task pylint
 	@$(TKN) hub install task python-coverage
 	@$(TKN) hub install task hadolint

@@ -32,6 +32,28 @@ spec:
     params:
     - name: url
       value: $(params.repo-url)
+  # Execute makefile linting
+  - name: makefile-lint
+    runAfter: ["fetch-source"]
+    taskRef:
+      name: check-make
+    workspaces:
+    - name: shared-workspace
+      workspace: shared-data
+    params:
+    - name: args
+      value: ["Makefile"]
+  # Execute markdown linting
+  - name: markdown-lint
+    runAfter: ["fetch-source"]
+    taskRef:
+      name: markdown-lint
+    workspaces:
+    - name: shared-workspace
+      workspace: shared-data
+    params:
+    - name: args
+      value: ["."]
   # Execute python linting
   - name: pylint
     runAfter: ["fetch-source"]
@@ -97,7 +119,7 @@ spec:
       value: policy
   # Build OCI Image
   - name: kaniko-build
-    runAfter: ["pylint", "pytest", "docker-lint", "helm-k8s-lint", "opa-conftest-check"]
+    runAfter: ["makefile-lint", "markdown-lint", "pylint", "pytest", "docker-lint", "helm-k8s-lint", "opa-conftest-check"]
     taskRef:
       name: kaniko
       kind: Task

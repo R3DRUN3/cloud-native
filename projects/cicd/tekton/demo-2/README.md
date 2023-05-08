@@ -1,18 +1,21 @@
 # TEKTON FIRST PIPELINE
-This repo contains a working implementation of a <a href="https://tekton.dev/">tekton</a> pipeline.
+This repo contains a working implementation of a [tekton](https://tekton.dev/) pipeline.
 <br/>
 We implement a tekton pipeline that does the following:
 1. *clone* a public git repository
-2. does *linting* against the python code
-3. executes a python *unit test*
-4. does *linting* against the *dockerfile*
-5. does *linting* against the *helm/k8s manifests*
-6. checks the *deployment manifest* against *OPA Conftest* rules
-7. *build* the *OCI image* and push it to a *local staging docker registry*
-8. *scan* the image for vulnerabilities
+2. does *linting* against the *Makefile*
+3. does *linting* against the *README*
+4. does *linting* against the python code
+5. executes a python *unit test*
+6. does *linting* against the *dockerfile*
+7. does *linting* against the *helm/k8s manifests*
+8. checks the *deployment manifest* against *OPA Conftest* rules
+9. *build* the *OCI image* and push it to a *local staging docker registry*
+10. *scan* the image for vulnerabilities
 
-Some tasks (eg. the linting and testing ones) are run in parallel to speed up the pipeline execution.
-<br/>
+Some tasks (eg. the linting and testing ones) are run in parallel to speed up the pipeline execution.  
+In a real world scenario it is recommended to execute some tasks (eg. the linting ones) via [pre-commit hooks](https://pre-commit.com/).
+
 **Note**: this is intended as a local development environment not suitable for production.
 
 
@@ -24,7 +27,7 @@ Some tasks (eg. the linting and testing ones) are run in parallel to speed up th
 - Helm
 - Kubectl
 - Tekton CLI
-- set up docker <a href="https://docs.docker.com/registry/insecure/">insecure registry</a> on your dev machine
+- set up docker [insecure registry](https://docs.docker.com/registry/insecure/) on your dev machine
 
 
 ## Instruction
@@ -58,7 +61,7 @@ make docker-registry-up
 ```
 if the output of the previous command contains `{"repositories":[]}` you are good to go.
 
-Install required tasks from <a href="https://hub.tekton.dev/">tekton hub</a>:
+Install required tasks from [tekton hub](https://hub.tekton.dev/):
 ```console
 make tkn-install-tasks
 ```
@@ -74,9 +77,7 @@ If you want you can inspect the pipeline log from the dashboard, just run:
 and then open a browser to http://localhost:9097.
 
 After a few minutes, our pipeline has terminated successfully:
-<p float="left">
-  <img src="images/pipeline.png" width="1300" />
-</p>
+![pipeline](Images/pipeline.png)
 
 We can prove this by pulling the builded image from our local registry and running it locally:
 ```console
@@ -84,18 +85,13 @@ make docker-pull-and-run-from-local
 ```
 
 Now open the browser at http://localhost:8887 et voilà! 🔥🔥🔥
-<p float="left">
-  <img src="images/app.png" width="1500" />
-</p>
+![app](Images/app.png)
 
-<br/>
 
-The app also expose <a href="https://prometheus.io/">Prometheus</a> metrics:
-<p float="left">
-  <img src="images/metrics.png" width="900" />
-</p>
+The app also expose [prometheus](https://prometheus.io/) metrics:  
+![prometheus](Images/metrics.png)
 
-<br/>
+
 
 To clean all the resources simply run:
 ```console
