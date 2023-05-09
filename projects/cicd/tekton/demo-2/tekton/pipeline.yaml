@@ -54,6 +54,27 @@ spec:
     params:
     - name: args
       value: ["."]
+  # SAST detection of hardcoded secrets (passwords, api keys, and tokens)
+  - name: gitleaks
+    runAfter: ["fetch-source"]
+    taskRef:
+      name: gitleaks
+    workspaces:
+    - name: source
+      workspace: shared-data
+    params:
+    - name: repo_path
+      value: ""
+    - name: config_file_url
+      value: https://raw.githubusercontent.com/tektoncd/catalog/main/task/gitleaks/0.1/samples/gitleaks.toml
+    - name: config_file_path
+      value: gitleaks.toml
+    - name: output_format
+      value: json
+    - name: report_output_path
+      value: report.json
+    - name: args
+      value: ["--verbose","--no-git"]
   # Execute python linting
   - name: pylint
     runAfter: ["fetch-source"]
@@ -119,7 +140,7 @@ spec:
       value: policy
   # Build OCI Image
   - name: kaniko-build
-    runAfter: ["makefile-lint", "markdown-lint", "pylint", "pytest", "docker-lint", "helm-k8s-lint", "opa-conftest-check"]
+    runAfter: ["makefile-lint", "markdown-lint", "gitleaks", "pylint", "pytest", "docker-lint", "helm-k8s-lint", "opa-conftest-check"]
     taskRef:
       name: kaniko
       kind: Task
