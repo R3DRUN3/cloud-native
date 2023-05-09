@@ -14,7 +14,10 @@ We implement a tekton pipeline that does the following:
 10. *scan* the image for vulnerabilities
 
 Some tasks (eg. the linting and testing ones) are run in parallel to speed up the pipeline execution.  
-In a real world scenario it is recommended to execute some tasks (eg. SAST, linting) via [pre-commit hooks](https://pre-commit.com/).
+In a real world scenario it is recommended to execute some tasks (eg. SAST, linting) via [pre-commit hooks](https://pre-commit.com/).  
+
+Here is an high-level example on how a secure pipeline looks like:
+![pipeline](images/secure-pipeline.png)  
 
 **Note**: this repository is intended as a demo on a disposable local development environment, this is not suitable for production.
 
