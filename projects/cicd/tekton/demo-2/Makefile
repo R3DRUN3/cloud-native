@@ -50,6 +50,7 @@ tkn-install-tasks: ## Install required tasks from tekton hub
 	@$(TKN) hub install task hadolint
 	@$(TKN) hub install task kube-linter
 	@$(TKN) hub install task helm-conftest
+	@$(TKN) hub install task conftest
 	@$(TKN) hub install task kaniko
 	@$(TKN) hub install task trivy-scanner
 

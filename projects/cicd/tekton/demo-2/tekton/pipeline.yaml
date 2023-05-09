@@ -108,6 +108,20 @@ spec:
       value: $(params.ignore-rules)
     - name: dockerfile-path
       value: $(params.dockerfile-path)
+  # Check Dockerfile against OPA Conftest rules
+  - name: opa-dockerfile-validation
+    runAfter: ["fetch-source"]
+    taskRef:
+      kind: Task
+      name: conftest
+    workspaces:
+    - name: source
+      workspace: shared-data
+    params:
+    - name: files
+      value: Dockerfile
+    - name: policy
+      value: policy/dockerfile
   # Helm/k8s manifests linting
   - name: helm-k8s-lint
     runAfter: ["fetch-source"]
@@ -125,7 +139,7 @@ spec:
     - name: includelist
       value: "no-extensions-v1beta"
   # Check helm manifests against OPA Conftest rules
-  - name: opa-conftest-check
+  - name: opa-helm-validation
     runAfter: ["fetch-source"]
     taskRef:
       kind: Task
@@ -137,10 +151,10 @@ spec:
     - name: chart
       value: $(params.helm-chart-dir)
     - name: policy
-      value: policy
+      value: policy/helm
   # Build OCI Image
   - name: kaniko-build
-    runAfter: ["makefile-lint", "markdown-lint", "gitleaks", "pylint", "pytest", "docker-lint", "helm-k8s-lint", "opa-conftest-check"]
+    runAfter: ["makefile-lint", "markdown-lint", "gitleaks", "pylint", "pytest", "docker-lint", "opa-dockerfile-validation", "helm-k8s-lint", "opa-helm-validation"]
     taskRef:
       name: kaniko
       kind: Task

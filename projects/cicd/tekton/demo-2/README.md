@@ -8,11 +8,10 @@ We implement a tekton pipeline that does the following:
 4. *SAST* analysis to search for *hardcoded secrets* (api keys, tokens, passwords) in the repository
 5. does *linting* against the python code
 6. executes a python *unit test*
-7. does *linting* against the *dockerfile*
-8. does *linting* against the *helm/k8s manifests*
-9. checks the *deployment manifest* against *OPA Conftest* rules
-10. *build* the *OCI image* and push it to a *local staging docker registry*
-11. *scan* the image for vulnerabilities
+7. does *linting* and *OPA Conftest* rules checking against the *dockerfile*
+8. does *linting* and *OPA Conftest* rules checking against the *helm/k8s manifests*
+9.  *build* the *OCI image* and push it to a *local staging docker registry*
+10. *scan* the image for vulnerabilities
 
 Some tasks (eg. the linting and testing ones) are run in parallel to speed up the pipeline execution.  
 In a real world scenario it is recommended to execute some tasks (eg. SAST, linting) via [pre-commit hooks](https://pre-commit.com/).
