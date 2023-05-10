@@ -12,14 +12,18 @@ help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 ## LOCAL DOCKER REGISTRY
-docker-registry-up: ## Spin up a local docker registry
-	@$(DOCKER) run -d -p 5000:5000 --restart=always --name registry registry:2
-	@$(SLEEP) 2
+docker-registry-up: ## Spin up two local docker registries: staging and production
+	@$(DOCKER) run -d -p 5000:5000 --restart=always --name registry-staging registry:2
+	@$(DOCKER) run -d -p 5001:5000 --restart=always --name registry-prod registry:2
+	@$(SLEEP) 6
 	@$(CURL) -X GET http://localhost:5000/v2/_catalog
+	@$(CURL) -X GET http://localhost:5001/v2/_catalog
 
 docker-registry-down: ## Delete the local docker registry
-	@$(DOCKER) container stop registry
-	@$(DOCKER) container rm -v registry
+	@$(DOCKER) container stop registry-staging
+	@$(DOCKER) container rm -v registry-staging
+	@$(DOCKER) container stop registry-prod
+	@$(DOCKER) container rm -v registry-prod
 
 ## MINIKUBE
 mini-up: ## Spin up a dev cluster with Minikube
@@ -60,5 +64,5 @@ tkn-run: ## Run tekton pipeline
 	@$(KUBECTL) create -f tekton/pipelinerun.yaml
 
 docker-pull-and-run-from-local: ## Pull the image from local registry and runs it
-	@$(DOCKER) pull localhost:5000/app:v1
-	@$(DOCKER) run -it --rm -p 8887:8887 localhost:5000/app:v1
+	@$(DOCKER) pull localhost:5001/app:prod
+	@$(DOCKER) run -it --rm -p 8887:8887 localhost:5001/app:prod

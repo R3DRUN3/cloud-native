@@ -27,8 +27,10 @@ spec:
     value: 'DL3007,DL3045,DL3042'
   - name: dockerfile-path
     value: './Dockerfile'
-  - name: image-reference
-    value: host.docker.internal:5000/app:v1
+  - name: image-reference-staging
+    value: host.docker.internal:5000/app:staging
+  - name: image-reference-prod
+    value: host.docker.internal:5001/app:prod
   - name: helm-chart-dir
     value: simple-web-app-chart
   - name: trivy_args_image_local

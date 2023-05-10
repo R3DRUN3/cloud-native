@@ -10,8 +10,9 @@ We implement a tekton pipeline that does the following:
 6. executes a python *unit test*
 7. does *linting* and *OPA Conftest* rules checking against the *dockerfile*
 8. does *linting* and *OPA Conftest* rules checking against the *helm/k8s manifests*
-9.  *build* the *OCI image* and push it to a *local staging docker registry*
+9. *build* the *OCI image* and push it to a *local 'staging' docker registry*
 10. *scan* the image for vulnerabilities
+11. push the scanned image to a *local 'production' docker registry*
 
 Some tasks (eg. the linting and testing ones) are run in parallel to speed up the pipeline execution.  
 In a real world scenario it is recommended to execute some tasks (eg. SAST, linting) via [pre-commit hooks](https://pre-commit.com/).  
@@ -43,13 +44,13 @@ make help
 Usage:
   make <target>
   help             Display this help.
-  docker-registry-up  Spin up a local docker registry
+  docker-registry-up  Spin up two local docker registries: staging and production
   docker-registry-down  Delete the local docker registry
   mini-up          Spin up a dev cluster with Minikube
   mini-dashboard   Enable minikube web dashboard
   mini-down        Delete the Minikube dev cluster
   tkn-install-tasks  Install required tasks from tekton hub
-  tekton-run       Run tekton pipeline
+  tkn-run          Run tekton pipeline
   docker-pull-and-run-from-local  Pull the image from local registry and runs it
 ```
 

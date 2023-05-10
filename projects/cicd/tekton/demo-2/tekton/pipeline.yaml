@@ -9,7 +9,9 @@ spec:
   params:
   - name: repo-url
     type: string
-  - name: image-reference
+  - name: image-reference-staging
+    type: string
+  - name: image-reference-prod
     type: string
   - name: dockerfile-path
     type: string
@@ -152,7 +154,7 @@ spec:
       value: $(params.helm-chart-dir)
     - name: policy
       value: policy/helm
-  # Build OCI Image
+  # Build OCI Image and push to staging registry
   - name: kaniko-build
     runAfter: ["makefile-lint", "markdown-lint", "gitleaks", "pylint", "pytest", "docker-lint", "opa-dockerfile-validation", "helm-k8s-lint", "opa-helm-validation"]
     taskRef:
@@ -160,7 +162,7 @@ spec:
       kind: Task
     params:
       - name: IMAGE
-        value: $(params.image-reference)
+        value: $(params.image-reference-staging)
       - name: EXTRA_ARGS
         value:
           - --skip-tls-verify
@@ -177,7 +179,7 @@ spec:
     params:
       - name: args
         value: |
-          copy docker://$(params.image-reference) --src-tls-verify=false oci:/workspace/source/local
+          copy docker://$(params.image-reference-staging) --src-tls-verify=false oci:/workspace/source/local
     workspaces:
       - name: source
         workspace: shared-data
@@ -195,6 +197,18 @@ spec:
     workspaces:
       - name: manifest-dir
         workspace: shared-data
-
+  # Copy scanned image to production registry
+  - name: skopeo-copy-to-production
+    runAfter: ["trivy-scan-local-image"]
+    taskRef:
+      name: custom-skopeo
+      kind: Task
+    params:
+      - name: args
+        value: |
+          copy --dest-tls-verify=false oci:/workspace/source/local docker://$(params.image-reference-prod)
+    workspaces:
+      - name: source
+        workspace: shared-data
 
 
