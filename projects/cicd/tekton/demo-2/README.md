@@ -20,6 +20,11 @@ In a real world scenario it is recommended to execute some tasks (eg. SAST, lint
 Here is an high-level example on how a secure pipeline looks like:
 ![pipeline](images/secure-pipeline.png)  
 
+<br/>
+
+Here is an high-level schema of tekton architecture:  
+![tektton](images/tekton-architecture.png)
+
 **Note**: this repository is intended as a demo on a disposable local development environment, this is not suitable for production.
 
 
