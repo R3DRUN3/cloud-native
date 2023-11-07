@@ -6,4 +6,6 @@ Fell free to explore all the subfolders!
 <br/>
 <br/>
 `NOTE`: If you are new to the cloud-sec world
-I recommend you take a look at <a href="https://github.com/R3DRUN3/aws-secops">this</a> and <a href="https://github.com/R3DRUN3/cyberhall/tree/main/k8s-security">this</a> folder first.
+I recommend you take a look at <a href="https://github.com/R3DRUN3/aws-secops">this</a> and <a href="https://github.com/R3DRUN3/cyberhall/tree/main/k8s-security">this</a> folder first.  
+
+For a practical example of `pentesting on aws s3`, take a look at [this](https://github.com/R3DRUN3/cyberhall/tree/main/CTF/flaws-cloud) repo.   
