@@ -22,13 +22,13 @@ This folder has been tested on Ubuntu 24.04 LTS.
 ### Download Firecracker Binary
 
 Download a recent version of Firecracker:  
-```sh
+```console
 sudo sh download_firecracker_bin.sh
 ```  
 
 ### Download a version of the Linux kernel
 You need to have a version of the linux kernel, for example you can download this:  
-```sh
+```console
 curl -fsSL -o hello-vmlinux.bin https://s3.amazonaws.com/spec.ccfc.min/img/hello/kernel/hello-vmlinux.bin
 ```  
 
@@ -36,7 +36,7 @@ curl -fsSL -o hello-vmlinux.bin https://s3.amazonaws.com/spec.ccfc.min/img/hello
 ### Configure Networking
 
 Configure tap and iptables for the MicroVM:  
-```sh
+```console
 sudo sh configure_tap.sh
 ```  
 
@@ -53,7 +53,7 @@ Step 1: Prepare the Root Filesystem File
 
 Create a 1 GB ext4 filesystem image:
 
-```sh
+```console
 dd if=/dev/zero of=rootfs.ext4 bs=1M count=1024
 mkfs.ext4 rootfs.ext4
 ```  
@@ -61,7 +61,7 @@ mkfs.ext4 rootfs.ext4
 
 Mount the image:
 
-```sh
+```console
 mkdir /tmp/my-rootfs
 sudo mount rootfs.ext4 /tmp/my-rootfs
 ```  
@@ -70,27 +70,27 @@ Step 2: Populate the Root Filesystem
 
 Start an Alpine Docker container and bind the mounted directory:
 
-```sh
+```console
 sudo docker run -it --rm -v /tmp/my-rootfs:/my-rootfs alpine
 ```  
 
 
 Inside the container, install necessary tools and set up OpenRC:
 
-```sh
+```console
 apk update && apk add openrc util-linux curl haveged python3 py3-pip wget git && rc-update add haveged default
 ```
 
 Change the root password (remember it if you want to login inside the MicroVM):  
 
-```sh
+```console
 passwd
 ```  
 
 
 Set up the init system:
 
-```sh
+```console
 ln -s agetty /etc/init.d/agetty.ttyS0
 echo ttyS0 > /etc/securetty
 rc-update add agetty.ttyS0 default
@@ -105,7 +105,7 @@ Step 3: Configure Networking
 
 Create the network configuration file:
 
-```sh
+```console
 cat <<EOF > /etc/network/interfaces
 auto lo
 iface lo inet loopback
@@ -122,7 +122,7 @@ EOF
 
 Link the networking service to boot:
 
-```sh
+```console
 ln -s /etc/init.d/networking /etc/init.d/ifupdown
 rc-update add networking boot
 ```  
@@ -131,14 +131,14 @@ rc-update add networking boot
 
 Configure DNS:
 
-```sh
+```console
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 ```  
 
 
 python webserver:  
-```sh
+```console
 cat <<EOF > /root/hello_server.py
 import http.server
 import socketserver
@@ -160,7 +160,7 @@ EOF
 
 
 start the python webserver on boot:  
-```sh
+```console
 mkdir -p /var/runcat && cat <<EOF > /etc/init.d/webserver
 #!/sbin/openrc-run
 command="/usr/bin/python3 /root/hello_server.py"
@@ -179,14 +179,14 @@ Step 4: Copy Filesystem Contents
 
 Copy essential directories to the rootfs:
 
-```sh
+```console
 for d in bin etc lib root sbin usr var; do tar c "/$d" | tar x -C /my-rootfs; done
 ``` 
 
 
 Create required empty directories:
 
-```sh
+```console
 for dir in dev proc run sys; do mkdir /my-rootfs/${dir}; done
 ```
 
@@ -194,14 +194,14 @@ Step 5: Finalize the Root Filesystem
 
 Exit the Docker container:
 
-```sh
+```console
 exit
 ``` 
 
 
 Unmount the root filesystem:
 
-```sh
+```console
 sudo umount /tmp/my-rootfs
 ``` 
 
@@ -211,7 +211,7 @@ sudo umount /tmp/my-rootfs
 Now we have everything we need to start our MicroVM.  
 For this we will use `firectl` (you need to download the release binary from github).  
 Spin up the MicroVM:  
-```sh
+```console
   sudo ./firectl \
   --kernel=hello-vmlinux.bin \
   --root-drive=./rootfs.ext4 \
@@ -219,16 +219,18 @@ Spin up the MicroVM:
 ```  
 
 Open a new terminal and run: 
-```sh
+```console
 curl http://172.16.0.2:8080
 ```  
 
 If everything went well you should see:  
-```sh
+```console
 Hello from your Firecracker VM! 🔥
 ```  
 
 
 The following video showcase the MicroVM spin up!  
+
+https://github.com/user-attachments/assets/2fdc9016-bc2e-4408-aad9-9842af6e8635
 
 
